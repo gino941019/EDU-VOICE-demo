@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>教育之聲｜教育政策討論（手機版 Demo）</title>
+	<style>
+		:root{
+			--bg:#0b1220;
+			--card:#111b2e;
+			--muted:#8ea3c6;
+			--text:#e9f0ff;
+			--primary:#4f8cff;
+			--good:#22c55e;
+			--warn:#f59e0b;
+			--line:rgba(255,255,255,.08);
+			--chip:rgba(255,255,255,.06);
+			--shadow: 0 14px 40px rgba(0,0,0,.45);
+		}
+		@media (prefers-color-scheme: light){
+			:root{
+				--bg:#f6f8fc;
+				--card:#ffffff;
+				--muted:#5c6b88;
+				--text:#0b1220;
+				--primary:#2563eb;
+				--line:rgba(15,23,42,.10);
+				--chip:rgba(15,23,42,.06);
+				--shadow: 0 10px 30px rgba(15,23,42,.10);
+			}
+		}
+		*{box-sizing:border-box}
+		body{
+			margin:0;
+			font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", Arial, sans-serif;
+			background: radial-gradient(1200px 900px at 70% -10%, rgba(79,140,255,.22), transparent 60%),
+						radial-gradient(900px 700px at -10% 10%, rgba(34,197,94,.16), transparent 55%),
+						var(--bg);
+			color:var(--text);
+		}
+		.wrap{
+			max-width: 420px;
+			margin: 0 auto;
+			padding: 18px 14px 120px;
+		}
+		header{
+			position: sticky;
+			top:0;
+			z-index: 5;
+			backdrop-filter: blur(12px);
+			background: linear-gradient(to bottom, rgba(0,0,0,.32), rgba(0,0,0,0));
+			padding: 10px 0 6px;
+			margin-bottom: 10px;
+		}
+		.brand{
+			display:flex;
+			align-items:center;
+			justify-content: space-between;
+			gap:10px;
+		}
+		.logo{
+			display:flex;
+			align-items:center;
+			gap:10px;
+		}
+		.badge{
+			width:38px;height:38px;border-radius:12px;
+			display:grid;place-items:center;
+			background: linear-gradient(135deg, rgba(79,140,255,.35), rgba(34,197,94,.20));
+			border:1px solid var(--line);
+			box-shadow: var(--shadow);
+			font-weight:700;
+		}
+		.brand h1{
+			font-size: 16px;
+			margin:0;
+			letter-spacing:.2px;
+		}
+		.brand p{
+			margin:2px 0 0;
+			font-size: 12px;
+			color: var(--muted);
+		}
+		.btn{
+			border:1px solid var(--line);
+			background: rgba(255,255,255,.02);
+			color: var(--text);
+			padding: 9px 12px;
+			border-radius: 12px;
+			font-size: 12px;
+			cursor:pointer;
+		}
+		.btn.primary{
+			background: rgba(79,140,255,.18);
+			border-color: rgba(79,140,255,.35);
+		}
+		.btn.good{
+			background: rgba(34,197,94,.14);
+			border-color: rgba(34,197,94,.35);
+		}
+		.btn.warn{
+			background: rgba(245,158,11,.14);
+			border-color: rgba(245,158,11,.35);
+		}
+		.btn:active{transform: translateY(1px)}
+		.card{
+			background: rgba(255,255,255,.02);
+			border: 1px solid var(--line);
+			border-radius: 16px;
+			padding: 14px;
+			box-shadow: var(--shadow);
+		}
+		.sectionTitle{
+			display:flex;
+			align-items:center;
+			justify-content: space-between;
+			gap:10px;
+			margin-bottom: 10px;
+		}
+		.sectionTitle h2{
+			font-size: 14px;
+			margin:0;
+		}
+		.sectionTitle span{
+			font-size: 12px;
+			color: var(--muted);
+		}
+		.row{display:flex; gap:10px; flex-wrap: wrap}
+		.chips{
+			display:flex; gap:8px; flex-wrap:wrap;
+		}
+		.chip{
+			padding: 8px 10px;
+			border-radius: 999px;
+			border: 1px solid var(--line);
+			background: var(--chip);
+			font-size: 12px;
+			color: var(--text);
+			cursor:pointer;
+			user-select:none;
+		}
+		.chip.active{
+			border-color: rgba(79,140,255,.55);
+			background: rgba(79,140,255,.18);
+		}
+		.small{
+			font-size: 12px;
+			color: var(--muted);
+			line-height: 1.5;
+			margin: 6px 0 0;
+		}
+		hr.sep{
+			border:none;
+			border-top:1px solid var(--line);
+			margin: 12px 0;
+		}
+
+		.list{display:flex; flex-direction:column; gap:10px}
+		.issue{
+			background: var(--card);
+			border:1px solid var(--line);
+			border-radius: 16px;
+			padding: 12px;
+		}
+		.issueTop{
+			display:flex;
+			align-items:flex-start;
+			justify-content: space-between;
+			gap: 10px;
+		}
+		.issue h3{
+			margin:0;
+			font-size: 14px;
+			line-height: 1.35;
+		}
+		.meta{
+			display:flex; gap:8px; flex-wrap:wrap;
+			margin-top: 8px;
+			color: var(--muted);
+			font-size: 12px;
+		}
+		.pill{
+			padding: 5px 8px;
+			border: 1px solid var(--line);
+			border-radius: 999px;
+			background: rgba(255,255,255,.02);
+		}
+		.status{
+			font-weight: 600;
+		}
+		.status.propose{color:#93c5fd}
+		.status.second{color:#fdba74}
+		.status.reply{color:#86efac}
+
+		.summary{
+			margin: 8px 0 0;
+			color: var(--muted);
+			font-size: 12px;
+			line-height: 1.6;
+		}
+
+		.details{
+			display:none;
+			margin-top: 10px;
+			border-top: 1px dashed var(--line);
+			padding-top: 10px;
+			color: var(--text);
+		}
+		.details .k{
+			color: var(--muted);
+			font-size: 12px;
+			margin: 0 0 6px;
+		}
+		.details .v{
+			font-size: 13px;
+			line-height: 1.7;
+			margin: 0 0 10px;
+		}
+		.actions{
+			display:flex;
+			gap: 8px;
+			flex-wrap: wrap;
+			margin-top: 10px;
+		}
+		.actionRow{
+			display:flex;
+			align-items:center;
+			justify-content: space-between;
+			gap: 10px;
+			margin-top: 10px;
+			color: var(--muted);
+			font-size: 12px;
+		}
+
+		.toast{
+			position: fixed;
+			left: 50%;
+			transform: translateX(-50%);
+			bottom: 14px;
+			width: min(420px, calc(100% - 28px));
+			background: rgba(17,27,46,.94);
+			border: 1px solid var(--line);
+			color: var(--text);
+			padding: 12px 12px;
+			border-radius: 16px;
+			box-shadow: var(--shadow);
+			display:none;
+		}
+		.toast strong{display:block; font-size: 13px; margin-bottom: 2px}
+		.toast span{color: var(--muted); font-size: 12px; line-height:1.5}
+
+		.modalOverlay{
+			position: fixed; inset:0;
+			background: rgba(0,0,0,.55);
+			display:none;
+			align-items:flex-end;
+			justify-content:center;
+			padding: 14px;
+			z-index: 20;
+		}
+		.modal{
+			width: min(420px, 100%);
+			background: var(--card);
+			border: 1px solid var(--line);
+			border-radius: 18px;
+			padding: 14px;
+			box-shadow: var(--shadow);
+		}
+		.modal h4{margin:0 0 6px; font-size:14px}
+		.field{
+			margin-top:10px;
+		}
+		label{
+			display:block;
+			font-size:12px;
+			color: var(--muted);
+			margin-bottom:6px;
+		}
+		textarea{
+			width:100%;
+			min-height: 110px;
+			resize: vertical;
+			border-radius: 14px;
+			padding: 10px;
+			border: 1px solid var(--line);
+			background: rgba(255,255,255,.02);
+			color: var(--text);
+			font-size: 13px;
+			line-height: 1.6;
+			outline: none;
+		}
+		.modalActions{
+			display:flex;
+			gap: 8px;
+			margin-top: 10px;
+		}
+		.progress{
+			height: 10px;
+			background: rgba(255,255,255,.06);
+			border: 1px solid var(--line);
+			border-radius: 999px;
+			overflow:hidden;
+		}
+		.progress > div{
+			height: 100%;
+			width: 0%;
+			background: linear-gradient(90deg, rgba(79,140,255,.9), rgba(34,197,94,.85));
+			transition: width .25s ease;
+		}
+		.miniGrid{
+			display:grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 10px;
+		}
+		.stat{
+			border: 1px solid var(--line);
+			background: rgba(255,255,255,.02);
+			border-radius: 16px;
+			padding: 10px;
+		}
+		.stat .n{font-size: 16px; font-weight:800}
+		.stat .t{font-size: 12px; color: var(--muted); margin-top: 2px}
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<header>
+			<div class="brand">
+				<div class="logo">
+					<div class="badge">教</div>
+					<div>
+						<h1>教育之聲｜政策討論（手機版 Demo）</h1>
+						<p>智慧過濾 × 漸進式揭露 × 影響力勳章</p>
+					</div>
+				</div>
+				<button class="btn" id="resetBtn">重置</button>
+			</div>
+		</header>
+
+		<section class="card" aria-label="身分標籤">
+			<div class="sectionTitle">
+				<h2>1) 身分標籤（智慧型過濾器）</h2>
+				<span id="selectedHint">尚未選擇</span>
+			</div>
+
+			<div class="row">
+				<div style="flex:1 1 160px">
+					<div class="small">身分</div>
+					<div class="chips" id="roleChips"></div>
+				</div>
+				<div style="flex:1 1 160px">
+					<div class="small">議題類型</div>
+					<div class="chips" id="topicChips"></div>
+				</div>
+			</div>
+
+			<hr class="sep" />
+			<div class="miniGrid" style="margin-top:10px">
+				<div class="stat">
+					<div class="n" id="statShown">0</div>
+					<div class="t">首頁推送（最多 3 則）</div>
+				</div>
+				<div class="stat">
+					<div class="n" id="statMatch">0</div>
+					<div class="t">符合標籤的議題總數</div>
+				</div>
+			</div>
+			<p class="small" style="margin-top:10px">
+				設計對齊「降低認知負荷」：首頁只推送最相關的 3 則政策資訊，點進去才展開細節。
+			</p>
+		</section>
+
+		<section style="margin-top: 12px">
+			<div class="sectionTitle">
+				<h2>2) 今日推送議題</h2>
+				<span>點「展開細節」看更多</span>
+			</div>
+			<div class="list" id="issueList"></div>
+		</section>
+
+		<section class="card" style="margin-top: 12px" aria-label="勳章系統">
+			<div class="sectionTitle">
+				<h2>3) 影響力勳章（階梯式參與）</h2>
+				<span id="badgeTitle">尚未解鎖</span>
+			</div>
+			<div class="progress" aria-label="勳章進度">
+				<div id="badgeBar"></div>
+			</div>
+			<p class="small" id="badgeDesc" style="margin-top:10px">
+				先從低門檻任務（投票/附議）建立勝任感，再逐步解鎖短評與更深度參與。
+			</p>
+			<div class="miniGrid" style="margin-top:10px">
+				<div class="stat">
+					<div class="n" id="statVotes">0</div>
+					<div class="t">投票/附議次數</div>
+				</div>
+				<div class="stat">
+					<div class="n" id="statComments">0</div>
+					<div class="t">匿名短評數</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+	<div class="toast" id="toast" role="status" aria-live="polite">
+		<strong id="toastTitle"></strong>
+		<span id="toastMsg"></span>
+	</div>
+
+	<div class="modalOverlay" id="modalOverlay" role="dialog" aria-modal="true">
+		<div class="modal">
+			<h4>匿名短評（意見 + 原因 + 案例）</h4>
+			<div class="small">提示：用結構化表達，把感性陳情轉化為理性建議。</div>
+			<div class="field">
+				<label for="commentBox">請輸入短評</label>
+				<textarea id="commentBox" placeholder="例：我支持延後到校時間，原因是...；案例是..."></textarea>
+			</div>
+			<div class="modalActions">
+				<button class="btn" id="cancelComment">取消</button>
+				<button class="btn primary" id="submitComment">送出短評</button>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		// --- Demo data (可依你們實際企畫再替換文案/分類) ---
+		const ROLES = ["學生", "家長", "教師"];
+		const TOPICS = ["課程", "學權", "資源分配", "校園生活", "師資/教學"];
+
+		const ISSUES = [
+			{
+				id:"i1",
+				title:"高中到校時間是否可彈性延後？（試辦方案）",
+				topic:"校園生活",
+				status:"附議中",
+				audience:["學生","家長","教師"],
+				summary:"提出「延後到校」與「交通/安全配套」的試辦模式，蒐集各方回饋。",
+				details:{
+					background:"部分學生反映睡眠不足、通勤壓力與早自習成效不一；同時家長關心安全與作息，教師關心課務調整。",
+					dataHint:"可引用：學生睡眠時數調查、遲到統計、通勤時間分布、第一節到課率。",
+					policyProcess:"提議 → 附議中（蒐集意見） → 檢核中 → 主管機關回應"
+				}
+			},
+			{
+				id:"i2",
+				title:"午休時長調整：25 分 vs 35 分（不同學制差異）",
+				topic:"校園生活",
+				status:"提議",
+				audience:["學生","教師"],
+				summary:"討論午休時間長度與上下午課程安排的影響，蒐集校園實務。",
+				details:{
+					background:"午休過短可能無法恢復精神；過長可能壓縮課程彈性與行政安排。",
+					dataHint:"可引用：課堂專注度回饋、午休違規/噪音事件、下午課表負荷。",
+					policyProcess:"提議 → 研議 → 試行 → 回應"
+				}
+			},
+			{
+				id:"i3",
+				title:"校園營養午餐品質：資訊透明與回饋機制",
+				topic:"資源分配",
+				status:"已回應",
+				audience:["家長","學生","教師"],
+				summary:"強化供應商資訊公開、菜單/營養標示與不良回報流程。",
+				details:{
+					background:"午餐品質與衛生是家長與學生的高關注；學校端需要可落地的回報與稽核流程。",
+					dataHint:"可引用：滿意度問卷、退餐率、食材抽驗結果、回報處理時效。",
+					policyProcess:"提議 → 附議 → 檢核 → 已回應（公告改善方案）"
+				}
+			},
+			{
+				id:"i4",
+				title:"108 課綱壓力：作業量與評量方式是否需調整？",
+				topic:"課程",
+				status:"附議中",
+				audience:["學生","家長","教師"],
+				summary:"針對作業量、段考頻率與多元評量的實作負擔，蒐集調整建議。",
+				details:{
+					background:"多元評量理念良好，但若缺乏配套可能增加學生/教師負擔。",
+					dataHint:"可引用：作業時數自評、教師備課時數、評量項目數量統計。",
+					policyProcess:"提議 → 附議中 → 檢核 → 回應"
+				}
+			},
+			{
+				id:"i5",
+				title:"偏鄉學習資源：線上課程與設備補助的分配原則",
+				topic:"資源分配",
+				status:"提議",
+				audience:["家長","教師"],
+				summary:"聚焦設備補助、網路穩定、師資支援與遠距課程品質。",
+				details:{
+					background:"偏鄉常面臨設備/網路與師資不足，需兼顧公平與效率。",
+					dataHint:"可引用：設備缺口盤點、網速覆蓋、到課率與學習成效追蹤。",
+					policyProcess:"提議 → 研議 → 預算審議 → 回應"
+				}
+			},
+			{
+				id:"i6",
+				title:"教師行政負擔：校務系統填報與流程簡化",
+				topic:"師資/教學",
+				status:"附議中",
+				audience:["教師"],
+				summary:"盤點重複填報、跨系統登入與簽核流程，提出減量方案。",
+				details:{
+					background:"行政作業過量會擠壓教學與輔導時間；需要制度層面的流程再造。",
+					dataHint:"可引用：每週填報工時、系統使用紀錄、重工項目清單。",
+					policyProcess:"提議 → 附議中 → 檢核 → 回應"
+				}
+			}
+		];
+
+		// --- State ---
+		const state = {
+			role: null,
+			topic: null,
+			votes: 0,
+			comments: 0,
+			openedIssueId: null,
+			pendingCommentIssueId: null
+		};
+
+		// --- Elements ---
+		const roleChips = document.getElementById("roleChips");
+		const topicChips = document.getElementById("topicChips");
+		const issueList = document.getElementById("issueList");
+		const selectedHint = document.getElementById("selectedHint");
+
+		const toast = document.getElementById("toast");
+		const toastTitle = document.getElementById("toastTitle");
+		const toastMsg = document.getElementById("toastMsg");
+
+		const modalOverlay = document.getElementById("modalOverlay");
+		const commentBox = document.getElementById("commentBox");
+
+		const statShown = document.getElementById("statShown");
+		const statMatch = document.getElementById("statMatch");
+		const statVotes = document.getElementById("statVotes");
+		const statComments = document.getElementById("statComments");
+
+		const badgeBar = document.getElementById("badgeBar");
+		const badgeTitle = document.getElementById("badgeTitle");
+		const badgeDesc = document.getElementById("badgeDesc");
+
+		// --- Helpers ---
+		function showToast(title, msg){
+			toastTitle.textContent = title;
+			toastMsg.textContent = msg;
+			toast.style.display = "block";
+			clearTimeout(showToast._t);
+			showToast._t = setTimeout(()=> toast.style.display="none", 2200);
+		}
+
+		function chip(label, active, onClick){
+			const el = document.createElement("div");
+			el.className = "chip" + (active ? " active" : "");
+			el.textContent = label;
+			el.addEventListener("click", onClick);
+			return el;
+		}
+
+		function getStatusClass(status){
+			if(status === "提議") return "propose";
+			if(status === "附議中") return "second";
+			return "reply";
+		}
+
+		function filteredIssues(){
+			return ISSUES.filter(i => {
+				const okRole = state.role ? i.audience.includes(state.role) : true;
+				const okTopic = state.topic ? i.topic === state.topic : true;
+				return okRole && okTopic;
+			});
+		}
+
+		// 智慧過濾：只取最相關 3 則（demo 版：取前 3；你也可改成依權重排序）
+		function pushedIssues(){
+			return filteredIssues().slice(0, 3);
+		}
+
+		function renderChips(){
+			roleChips.innerHTML = "";
+			topicChips.innerHTML = "";
+
+			ROLES.forEach(r=>{
+				roleChips.appendChild(
+					chip(r, state.role === r, ()=>{
+						state.role = (state.role === r) ? null : r;
+						renderAll();
+					})
+				);
+			});
+
+			TOPICS.forEach(t=>{
+				topicChips.appendChild(
+					chip(t, state.topic === t, ()=>{
+						state.topic = (state.topic === t) ? null : t;
+						renderAll();
+					})
+				);
+			});
+
+			const hint = [
+				state.role ? `身分：${state.role}` : null,
+				state.topic ? `議題：${state.topic}` : null
+			].filter(Boolean).join("｜");
+
+			selectedHint.textContent = hint || "尚未選擇";
+		}
+
+		function renderIssues(){
+			issueList.innerHTML = "";
+			const all = filteredIssues();
+			const list = pushedIssues();
+
+			statMatch.textContent = String(all.length);
+			statShown.textContent = String(list.length);
+
+			if(list.length === 0){
+				const empty = document.createElement("div");
+				empty.className = "issue";
+				empty.innerHTML = `
+					<h3>目前沒有符合的議題</h3>
+					<div class="summary">請嘗試取消部分標籤，或切換不同身分/議題類型。</div>
+				`;
+				issueList.appendChild(empty);
+				return;
+			}
+
+			list.forEach(issue=>{
+				const open = state.openedIssueId === issue.id;
+
+				const el = document.createElement("div");
+				el.className = "issue";
+				el.innerHTML = `
+					<div class="issueTop">
+						<div style="flex:1">
+							<h3>${issue.title}</h3>
+							<div class="meta">
+								<div class="pill"><span class="status ${getStatusClass(issue.status)}">${issue.status}</span></div>
+								<div class="pill">分類：${issue.topic}</div>
+								<div class="pill">適用：${issue.audience.join(" / ")}</div>
+							</div>
+							<div class="summary">${issue.summary}</div>
+						</div>
+						<div style="display:flex; flex-direction:column; gap:8px">
+							<button class="btn primary" data-action="toggle" data-id="${issue.id}">
+								${open ? "收合" : "展開細節"}
+							</button>
+						</div>
+					</div>
+
+					<div class="details" style="${open ? "display:block" : "display:none"}">
+						<p class="k">背景</p>
+						<p class="v">${issue.details.background}</p>
+
+						<p class="k">可用數據/資料提示</p>
+						<p class="v">${issue.details.dataHint}</p>
+
+						<p class="k">政策進度（示意）</p>
+						<p class="v">${issue.details.policyProcess}</p>
+
+						<div class="actions">
+							<button class="btn good" data-action="vote" data-id="${issue.id}">投票 / 附議</button>
+							<button class="btn warn" data-action="comment" data-id="${issue.id}">匿名短評</button>
+							<button class="btn" data-action="bookmark" data-id="${issue.id}">收藏</button>
+						</div>
+
+						<div class="actionRow">
+							<div>回饋：低門檻任務 → 勝任感 → 解鎖勳章</div>
+							<div>（demo）</div>
+						</div>
+					</div>
+				`;
+
+				el.addEventListener("click", (e)=>{
+					const btn = e.target.closest("button");
+					if(!btn) return;
+					const action = btn.dataset.action;
+					const id = btn.dataset.id;
+
+					if(action === "toggle"){
+						state.openedIssueId = (state.openedIssueId === id) ? null : id;
+						renderIssues();
+						return;
+					}
+					if(action === "vote"){
+						state.votes += 1;
+						showToast("已完成投票/附議", "你獲得：基礎勳章進度 +1（建立勝任感）");
+						renderBadge();
+						return;
+					}
+					if(action === "bookmark"){
+						showToast("已收藏議題", "你可以在「追蹤進度」頁（正式版）查看更新。");
+						return;
+					}
+					if(action === "comment"){
+						state.pendingCommentIssueId = id;
+						openModal();
+						return;
+					}
+				});
+
+				issueList.appendChild(el);
+			});
+		}
+
+		function badgeStage(){
+			// 0: 未解鎖  1: 基礎參與者  2: 理性對話者  3: 行動推動者（demo 只做到短評）
+			if(state.votes >= 1) {
+				if(state.comments >= 1) return 2;
+				return 1;
+			}
+			return 0;
+		}
+
+		function renderBadge(){
+			statVotes.textContent = String(state.votes);
+			statComments.textContent = String(state.comments);
+
+			const stage = badgeStage();
+			let pct = 0;
+			let title = "尚未解鎖";
+			let desc = "先從低門檻任務（投票/附議）建立勝任感，再逐步解鎖短評與更深度參與。";
+
+			if(stage === 1){
+				pct = 40;
+				title = "基礎參與者";
+				desc = "你已完成低門檻參與（投票/附議）。下一步：用「匿名短評」把意見寫得更具邏輯。";
+			}
+			if(stage === 2){
+				pct = 75;
+				title = "理性對話者";
+				desc = "你已完成匿名短評。正式版可再解鎖：連署、發起提案、進度追蹤與二次申辯。";
+			}
+
+			badgeTitle.textContent = title;
+			badgeDesc.textContent = desc;
+			badgeBar.style.width = pct + "%";
+		}
+
+		function openModal(){
+			commentBox.value = "";
+			modalOverlay.style.display = "flex";
+			setTimeout(()=> commentBox.focus(), 0);
+		}
+		function closeModal(){
+			modalOverlay.style.display = "none";
+			state.pendingCommentIssueId = null;
+		}
+
+		function bindModal(){
+			document.getElementById("cancelComment").addEventListener("click", closeModal);
+			document.getElementById("submitComment").addEventListener("click", ()=>{
+				const text = commentBox.value.trim();
+				if(text.length < 10){
+					showToast("短評太短", "建議至少 10 個字，並包含：意見 + 原因 + 案例。");
+					return;
+				}
+				state.comments += 1;
+				showToast("已送出匿名短評", "你獲得：對話勳章進度 +1（強化歸屬感與自主性）");
+				renderBadge();
+				closeModal();
+			});
+
+			modalOverlay.addEventListener("click", (e)=>{
+				if(e.target === modalOverlay) closeModal();
+			});
+		}
+
+		function reset(){
+			state.role = null;
+			state.topic = null;
+			state.votes = 0;
+			state.comments = 0;
+			state.openedIssueId = null;
+			state.pendingCommentIssueId = null;
+			renderAll();
+			showToast("已重置", "回到初始狀態。");
+		}
+
+		function renderAll(){
+			renderChips();
+			renderIssues();
+			renderBadge();
+		}
+
+		// Init
+		bindModal();
+		document.getElementById("resetBtn").addEventListener("click", reset);
+		renderAll();
+	</script>
+</body>
+</html>
